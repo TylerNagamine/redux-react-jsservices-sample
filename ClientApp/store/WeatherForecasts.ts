@@ -44,15 +44,20 @@ type KnownAction = RequestWeatherForecastsAction | ReceiveWeatherForecastsAction
 export const actionCreators = {
     requestWeatherForecasts: (startDateIndex: number): AppThunkAction<KnownAction> => (dispatch, getState) => {
         // Only load data if it's something we don't already have (and are not already loading)
-        if (startDateIndex !== getState().weatherForecasts.startDateIndex) {
+        const state = getState();
+        if (startDateIndex !== getState().weatherForecasts.startDateIndex ||
+            state.weatherForecasts.forecasts.length === 0) {
+            var index = startDateIndex || 0;
+            dispatch({ type: 'REQUEST_WEATHER_FORECASTS', startDateIndex: index });
+
             let fetchTask = fetch(`/api/SampleData/WeatherForecasts?startDateIndex=${ startDateIndex }`)
                 .then(response => response.json() as Promise<WeatherForecast[]>)
                 .then(data => {
-                    dispatch({ type: 'RECEIVE_WEATHER_FORECASTS', startDateIndex: startDateIndex, forecasts: data });
+                    dispatch({ type: 'RECEIVE_WEATHER_FORECASTS', startDateIndex: index, forecasts: data });
                 });
 
-            addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
-            dispatch({ type: 'REQUEST_WEATHER_FORECASTS', startDateIndex: startDateIndex });
+            //addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
+            
         }
     }
 };

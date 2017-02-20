@@ -40,13 +40,16 @@ export default createServerRenderer(params => {
             // Perform an initial render that will cause any async tasks (e.g., data access) to begin
             renderToString(app);
 
+            //Add user agent to initial state
+            let initialState = store.getState();
+
             // Once the tasks are done, we can perform the final render
             // We also send the redux store state, so the client can continue execution where the server left off
             params.domainTasks.then(() => {
                 resolve({
                     html: renderToString(app),
                     globals: {
-                        initialReduxState: store.getState()
+                        initialReduxState: initialState,
                     }
                 });
             }, reject); // Also propagate any errors back into the host application

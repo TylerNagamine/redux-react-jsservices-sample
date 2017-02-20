@@ -1,12 +1,8 @@
 @{
     ViewData["Title"] = "Home Page";
-    var preRender = new 
-    {
-        userAgent = Context.Request.Headers["user-agent"]
-    };
 }
 
-<div id="react-app" asp-prerender-module="ClientApp/dist/main-server" asp-prerender-data="@preRender">Loading...</div>
+<div id="react-app" asp-prerender-module="ClientApp/dist/main-server" asp-prerender-data="new { userAgent = @Context.Request.Headers["user-agent"] }">Loading...</div>
 
 @section scripts {
     <script src="~/dist/main-client.js" asp-append-version="true"></script>

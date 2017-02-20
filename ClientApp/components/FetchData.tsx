@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { ApplicationState }  from '../store';
 import * as WeatherForecastsState from '../store/WeatherForecasts';
 
+import { Curtain } from './Curtain';
+
+import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
@@ -41,26 +44,31 @@ class FetchData extends React.Component<WeatherForecastProps, void> {
 
     private renderForecastsTable() {
         return (
-            <Table className='table'>
-                <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
-                    <TableRow>
-                        <TableHeaderColumn>Date</TableHeaderColumn>
-                        <TableHeaderColumn>Temp. (C)</TableHeaderColumn>
-                        <TableHeaderColumn>Temp. (F)</TableHeaderColumn>
-                        <TableHeaderColumn>Summary</TableHeaderColumn>
-                    </TableRow>
-                </TableHeader>
-                <TableBody stripedRows={true} displayRowCheckbox={false}>
-                {this.props.forecasts.map(forecast =>
-                    <TableRow key={ forecast.dateFormatted }>
-                        <TableRowColumn>{ forecast.dateFormatted }</TableRowColumn>
-                        <TableRowColumn>{ forecast.temperatureC }</TableRowColumn>
-                        <TableRowColumn>{ forecast.temperatureF }</TableRowColumn>
-                        <TableRowColumn>{ forecast.summary }</TableRowColumn>
-                    </TableRow>
-                )}
-                </TableBody>
-            </Table>
+            <div style={ { position: 'relative', minHeight: 300 } }>
+                <Curtain shown={this.props.isLoading} curtainText={'Loading...'}>
+                    <CircularProgress />
+                </Curtain>
+                <Table className='table'>
+                    <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                        <TableRow>
+                            <TableHeaderColumn>Date</TableHeaderColumn>
+                            <TableHeaderColumn>Temp. (C)</TableHeaderColumn>
+                            <TableHeaderColumn>Temp. (F)</TableHeaderColumn>
+                            <TableHeaderColumn>Summary</TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody stripedRows={true} displayRowCheckbox={false}>
+                    {this.props.forecasts.map(forecast =>
+                        <TableRow key={ forecast.dateFormatted } selectable={false}>
+                            <TableRowColumn>{ forecast.dateFormatted }</TableRowColumn>
+                            <TableRowColumn>{ forecast.temperatureC }</TableRowColumn>
+                            <TableRowColumn>{ forecast.temperatureF }</TableRowColumn>
+                            <TableRowColumn>{ forecast.summary }</TableRowColumn>
+                        </TableRow>
+                    )}
+                    </TableBody>
+                </Table>
+            </div>
         );
     }
 
@@ -80,7 +88,6 @@ class FetchData extends React.Component<WeatherForecastProps, void> {
                     Next
                     </RaisedButton>
                 </Link>
-                { this.props.isLoading ? <span>Loading...</span> : [] }
             </div>
         );
     }

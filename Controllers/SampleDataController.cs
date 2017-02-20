@@ -15,15 +15,19 @@ namespace Learningredux.Controllers
         };
 
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts(int startDateIndex)
+        public async Task<IEnumerable<WeatherForecast>> WeatherForecasts(int startDateIndex)
         {
+            await Task.Delay(1000);
+
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 DateFormatted = DateTime.Now.AddDays(index + startDateIndex).ToString("d"),
                 TemperatureC = rng.Next(-20, 55),
                 Summary = Summaries[rng.Next(Summaries.Length)]
             });
+
+            return forecasts;
         }
 
         public class WeatherForecast
