@@ -28,7 +28,7 @@ module.exports = (env) => {
                 'redux-thunk',
                 'react-router-redux',
                 'style-loader',
-                'react-tap-event-plugin',
+                'react-tap-event-plugin'
             ],
         },
         output: {

@@ -30,7 +30,9 @@
     "url-loader": "^0.5.7",
     "webpack": "^2.2.0",
     "webpack-hot-middleware": "^2.12.2",
-    "webpack-merge": "^0.14.1"
+    "webpack-merge": "^0.14.1",
+    "es6-object-assign": "^1.0.3",
+    "es6-promise": "^4.0.5"
   },
   "devDependencies": {
     "@types/history": "^2.0.0",

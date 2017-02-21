@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 export interface ICurtainProps {
+    children?: React.ReactNode;
     curtainText?: string;
     shown?: boolean;
 }
 
 export interface ICurtainState {
-    isShown: boolean;
 }
 
 export class Curtain extends React.Component<ICurtainProps, ICurtainState> {
@@ -26,17 +26,17 @@ export class Curtain extends React.Component<ICurtainProps, ICurtainState> {
 
     constructor(props: ICurtainProps) {
         super(props);
+    }
 
-        this.state = {
-            isShown: false,
-        };
+    public shouldComponentUpdate(nextProps: ICurtainProps, nextState: ICurtainState): boolean {
+        return this.props.shown != nextProps.shown ||
+            this.props.children != nextProps.children ||
+            this.props.curtainText != nextProps.curtainText;
     }
 
     public render() {
-        this.state.isShown = this.props.shown;
-
         return (
-            <div style={this.styles} hidden={!this.state.isShown}>
+            <div style={this.styles} hidden={!this.props.shown}>
                 <div style={this.childStyles}>
                     {this.props.children}
                     <br />
